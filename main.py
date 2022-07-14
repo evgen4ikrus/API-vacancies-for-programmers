@@ -14,11 +14,12 @@ def predict_rub_salary(vacancy):
                 return salary['to'] * 0.8
 
 
-def get_vacancies_information(url, language, area=1, date_from=30):
+def get_vacancies_information(url, language, page=0, area=1, date_from=30):
     params = {
             'text': f'Программист {language}',
             'area': area,
             'date_from': date_from,
+            'page': page,
         }
     response = requests.get(url, params=params)
     response.raise_for_status()
@@ -45,18 +46,23 @@ def main():
 
     for language in popular_programming_languages:
         vacancies_information = get_vacancies_information(url, language, date_from=date_from)
-
-        vacancies = vacancies_information['items']
-        vacancy_counts = vacancies_information['found']
+        page = 0
+        pages_number = vacancies_information['pages']
         total_salary = 0
         vacancies_processed = 0
+        
+        while page < pages_number:  
+            vacancies_information = get_vacancies_information(url, language, page, date_from=date_from)
+            vacancies = vacancies_information['items']
+            vacancy_counts = vacancies_information['found']
 
-        for vacancy in vacancies:
-            salary = predict_rub_salary(vacancy)
-            if salary:
-                vacancies_processed += 1
-                total_salary += salary
-
+            for vacancy in vacancies:
+                salary = predict_rub_salary(vacancy)
+                if salary:
+                    vacancies_processed += 1
+                    total_salary += salary
+            page += 1
+            
         popular_vacancies_statistics[language] = {
             'vacancies_found': vacancy_counts,
             'vacancies_processed': vacancies_processed,
@@ -64,6 +70,7 @@ def main():
         }
 
     print(popular_vacancies_statistics)
-
+    
+    
 if __name__ == '__main__':
     main()
