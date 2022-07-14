@@ -1,6 +1,18 @@
 import requests
 from datetime import date, timedelta
 
+
+def predict_rub_salary(vacancy):
+    if vacancy['salary']:
+        salary = vacancy['salary']
+        if salary['currency'] == 'RUR':
+            if salary['from'] and salary['to']:
+                return (salary['from'] + salary['to']) / 2
+            elif salary['from']:
+                return salary['from'] * 1.2
+            elif salary['to']:
+                return salary['to'] * 0.8
+
     
 def main():
     
@@ -40,7 +52,7 @@ def main():
 
     vacancies = response.json()['items']
     for vacancy in vacancies:
-        print(vacancy['salary'])
+        print(predict_rub_salary(vacancy))
 
 if __name__ == '__main__':
     main()
