@@ -1,18 +1,6 @@
-from dotenv import load_dotenv
 import requests
 from datetime import date, timedelta
-import os
-
-
-def predict_salary(salary_from, salary_to):
-    predict_salary = None
-    if salary_from and salary_to:
-        predict_salary = (salary_from + salary_to) / 2
-    elif salary_from:
-        predict_salary = salary_from * 1.2
-    elif salary_to:
-        predict_salary = salary_to * 0.8
-    return predict_salary
+from api_halpers import predict_salary
 
 
 def predict_rub_salary_hh(vacancy):
@@ -23,14 +11,6 @@ def predict_rub_salary_hh(vacancy):
             salary_to = salary['to']
             predicted_salary = predict_salary(salary_from, salary_to)
             return predicted_salary
-    
-
-def predict_rub_salary_for_superJob():
-    pass
-
-
-def predict_rub_salary_sj(vacancy):
-    pass
 
 
 def get_vacancies_information(url, language, page=0, area=1, date_from=30):
@@ -46,10 +26,6 @@ def get_vacancies_information(url, language, page=0, area=1, date_from=30):
 
 
 def main():
-
-    load_dotenv()
-    super_job_secret_key = os.getenv("SUPER_JOB_SECRET_KEY")
-
     popular_programming_languages = [
         'Python',
         'Java',
@@ -61,7 +37,6 @@ def main():
         'PHP',
         'Ruby',
     ]
-
 
     url = 'https://api.hh.ru/vacancies/'
     date_from = date.today() - timedelta(days=30)
@@ -91,24 +66,8 @@ def main():
             'vacancies_processed': vacancies_processed,
             'average_salary': int(total_salary / vacancies_processed),
         }   
-
-
-    url = 'https://api.superjob.ru/2.0/vacancies/'
-    headers = {
-        'X-Api-App-Id': super_job_secret_key,
-    }
-    params = {
-        'catalogues': 48,
-        'town': 'Москва'
-    }
-    response = requests.get(url, headers=headers, params=params)
-    response.raise_for_status()
-    vacancies_information = response.json()
     
-    vacancies_information = response.json()['objects']
-    for vacancy in vacancies_information:
-        print(f"{vacancy['profession']}, {vacancy['town']['title']}")
-        
+    print(popular_vacancies_statistics)
         
 if __name__ == '__main__':
     main()
