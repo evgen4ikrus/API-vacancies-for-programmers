@@ -3,6 +3,7 @@ import requests
 from datetime import date, timedelta
 import os
 
+
 def predict_rub_salary(vacancy):
     if vacancy['salary']:
         salary = vacancy['salary']
@@ -75,6 +76,23 @@ def main():
             'average_salary': int(total_salary / vacancies_processed),
         }   
 
+
+    url = 'https://api.superjob.ru/2.0/vacancies/'
+    headers = {
+        'X-Api-App-Id': super_job_secret_key,
+    }
+    params = {
+        'catalogues': 48,
+        'town': 'Москва'
+    }
+    response = requests.get(url, headers=headers, params=params)
+    response.raise_for_status()
+    vacancies_information = response.json()
     
+    vacancies_information = response.json()['objects']
+    for vacancy in vacancies_information:
+        print(f"{vacancy['profession']}, {vacancy['town']['title']}")
+        
+        
 if __name__ == '__main__':
     main()
