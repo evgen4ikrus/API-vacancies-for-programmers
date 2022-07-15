@@ -1,6 +1,7 @@
+from dotenv import load_dotenv
 import requests
 from datetime import date, timedelta
-
+import os
 
 def predict_rub_salary(vacancy):
     if vacancy['salary']:
@@ -28,6 +29,9 @@ def get_vacancies_information(url, language, page=0, area=1, date_from=30):
 
 def main():
 
+    load_dotenv()
+    super_job_secret_key = os.getenv("SUPER_JOB_SECRET_KEY")
+
     popular_programming_languages = [
         'Python',
         'Java',
@@ -40,6 +44,7 @@ def main():
         'Ruby',
     ]
 
+
     url = 'https://api.hh.ru/vacancies/'
     date_from = date.today() - timedelta(days=30)
     popular_vacancies_statistics = {}
@@ -48,6 +53,7 @@ def main():
         vacancies_information = get_vacancies_information(url, language, date_from=date_from)
         page = 0
         pages_number = vacancies_information['pages']
+        pages_number = 1
         total_salary = 0
         vacancies_processed = 0
         
@@ -67,10 +73,8 @@ def main():
             'vacancies_found': vacancy_counts,
             'vacancies_processed': vacancies_processed,
             'average_salary': int(total_salary / vacancies_processed),
-        }
+        }   
 
-    print(popular_vacancies_statistics)
-    
     
 if __name__ == '__main__':
     main()
