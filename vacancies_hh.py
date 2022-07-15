@@ -13,7 +13,8 @@ def predict_rub_salary_hh(vacancy):
             return predicted_salary
 
 
-def get_vacancies_hh_information(url, language, page=0, area=1, date_from=30):
+def get_vacancies_hh_information(language='Python', page=0, area=1, date_from=30):
+    url = 'https://api.hh.ru/vacancies/'
     params = {
             'text': f'Программист {language}',
             'area': area,
@@ -38,19 +39,19 @@ def main():
         'Ruby',
     ]
 
-    url = 'https://api.hh.ru/vacancies/'
+
     date_from = date.today() - timedelta(days=30)
     popular_vacancies_statistics = {}
 
     for language in popular_programming_languages:
-        vacancies_hh_information = get_vacancies_hh_information(url, language, date_from=date_from)
+        vacancies_hh_information = get_vacancies_hh_information(language=language, date_from=date_from)
         page = 0
         pages_number = vacancies_hh_information['pages']
         total_salary = 0
         vacancies_processed = 0
         
         while page < pages_number:  
-            vacancies_hh_information = get_vacancies_hh_information(url, language, page, date_from=date_from)
+            vacancies_hh_information = get_vacancies_hh_information(language=language, page=page, date_from=date_from)
             vacancies = vacancies_hh_information['items']
             vacancy_counts = vacancies_hh_information['found']
 

@@ -4,13 +4,13 @@ import os
 from api_halpers import predict_salary
 
 
-def get_vacancies_sj_information(secret_key):
+def get_vacancies_sj_information(secret_key, id_category=48):
     url = 'https://api.superjob.ru/2.0/vacancies/'
     headers = {
         'X-Api-App-Id': secret_key,
     }
     params = {
-        'catalogues': 48,
+        'catalogues': id_category,
         'town': 'Москва'
     }
     response = requests.get(url, headers=headers, params=params)
