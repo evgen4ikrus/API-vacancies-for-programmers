@@ -4,16 +4,33 @@ from datetime import date, timedelta
 import os
 
 
-def predict_rub_salary(vacancy):
+def predict_salary(salary_from, salary_to):
+    predict_salary = None
+    if salary_from and salary_to:
+        predict_salary = (salary_from + salary_to) / 2
+    elif salary_from:
+        predict_salary = salary_from * 1.2
+    elif salary_to:
+        predict_salary = salary_to * 0.8
+    return predict_salary
+
+
+def predict_rub_salary_hh(vacancy):
     if vacancy['salary']:
         salary = vacancy['salary']
         if salary['currency'] == 'RUR':
-            if salary['from'] and salary['to']:
-                return (salary['from'] + salary['to']) / 2
-            elif salary['from']:
-                return salary['from'] * 1.2
-            elif salary['to']:
-                return salary['to'] * 0.8
+            salary_from = salary['from']
+            salary_to = salary['to']
+            predicted_salary = predict_salary(salary_from, salary_to)
+            return predicted_salary
+    
+
+def predict_rub_salary_for_superJob():
+    pass
+
+
+def predict_rub_salary_sj(vacancy):
+    pass
 
 
 def get_vacancies_information(url, language, page=0, area=1, date_from=30):
@@ -54,7 +71,6 @@ def main():
         vacancies_information = get_vacancies_information(url, language, date_from=date_from)
         page = 0
         pages_number = vacancies_information['pages']
-        pages_number = 1
         total_salary = 0
         vacancies_processed = 0
         
@@ -64,7 +80,7 @@ def main():
             vacancy_counts = vacancies_information['found']
 
             for vacancy in vacancies:
-                salary = predict_rub_salary(vacancy)
+                salary = predict_rub_salary_hh(vacancy)
                 if salary:
                     vacancies_processed += 1
                     total_salary += salary
