@@ -28,15 +28,15 @@ def get_vacancies_hh_information(language='Python', page=0, area=1, date_from=30
 
 def main():
     popular_programming_languages = [
-        'Python',
-        'Java',
-        'Javascript',
-        'Go',
-        'C',
-        'C#',
+        # 'Python',
+        # 'Java',
+        # 'Javascript',
+        # 'Go',
+        # 'C',
+        # 'C#',
         'C++',
-        'PHP',
-        'Ruby',
+        # 'PHP',
+        # 'Ruby',
     ]
 
 
@@ -44,16 +44,14 @@ def main():
     popular_vacancies_statistics = {}
 
     for language in popular_programming_languages:
+        
         vacancies_hh_information = get_vacancies_hh_information(language=language, date_from=date_from)
-        page = 0
         pages_number = vacancies_hh_information['pages']
-        total_salary = 0
-        vacancies_processed = 0
+        page, total_salary, vacancies_processed = 0, 0, 0
+        vacancy_counts = vacancies_hh_information['found']
         
         while page < pages_number:  
-            vacancies_hh_information = get_vacancies_hh_information(language=language, page=page, date_from=date_from)
-            vacancies = vacancies_hh_information['items']
-            vacancy_counts = vacancies_hh_information['found']
+            vacancies = get_vacancies_hh_information(language=language, page=page, date_from=date_from)['items']
 
             for vacancy in vacancies:
                 salary = predict_rub_salary_hh(vacancy)
