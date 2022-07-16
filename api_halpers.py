@@ -1,12 +1,14 @@
 from terminaltables import AsciiTable
 
-def show_table(languages_statistics, title='Название таблицы'):  
+
+def show_table(languages_statistics,
+               title='Название таблицы'):
     table_data = [
         [
-            'Язык программирования', 
-            'Вакансий найдено', 
-            'Вакансий обработано', 
-            'Средняя зарплата'
+            'Язык программирования',
+            'Вакансий найдено',
+            'Вакансий обработано',
+            'Средняя зарплата',
         ],
     ]
     for language_statistics in languages_statistics:
@@ -31,4 +33,3 @@ def predict_salary(salary_from, salary_to):
     elif salary_to:
         predict_salary = salary_to * 0.8
     return predict_salary
-
