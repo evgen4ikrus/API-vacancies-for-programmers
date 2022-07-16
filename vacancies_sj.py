@@ -18,13 +18,12 @@ def get_vacancies_sj_information(secret_key, id_category=48):
     return response.json()['objects']
 
 
-def predict_rub_salary_for_superJob():
-    pass
-
-
 def predict_rub_salary_sj(vacancy):
-    pass
-
+    payment_from = vacancy['payment_from']
+    payment_to = vacancy['payment_to']
+    predicted_salary = predict_salary(payment_from, payment_to)
+    return predicted_salary
+    
 
 def main():
 
@@ -34,7 +33,8 @@ def main():
     vacancies_sj_information = get_vacancies_sj_information(super_job_secret_key)
     
     for vacancy in vacancies_sj_information:
-        print(f"{vacancy['profession']}, {vacancy['town']['title']}")
+        salary = predict_rub_salary_sj(vacancy)
+        print(f"{vacancy['profession']}, {vacancy['town']['title']}, {salary}")
         
         
 if __name__ == '__main__':
