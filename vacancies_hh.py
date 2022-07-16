@@ -1,6 +1,6 @@
 import requests
 from datetime import date, timedelta
-from api_halpers import predict_salary
+from api_halpers import predict_salary, show_table
 
 
 def predict_rub_salary_hh(vacancy):
@@ -28,20 +28,20 @@ def get_vacancies_hh_information(language='Python', page=0, area=1, date_from=30
 
 def main():
     popular_programming_languages = [
-        # 'Python',
-        # 'Java',
-        # 'Javascript',
-        # 'Go',
-        # 'C',
-        # 'C#',
+        'Python',
+        'Java',
+        'Javascript',
+        'Go',
+        'C',
+        'C#',
         'C++',
-        # 'PHP',
-        # 'Ruby',
+        'PHP',
+        'Ruby',
     ]
 
 
     date_from = date.today() - timedelta(days=30)
-    popular_vacancies_statistics = {}
+    popular_languages_statistics = {}
 
     for language in popular_programming_languages:
         
@@ -60,13 +60,14 @@ def main():
                     total_salary += salary
             page += 1
             
-        popular_vacancies_statistics[language] = {
+        popular_languages_statistics[language] = {
             'vacancies_found': vacancy_counts,
             'vacancies_processed': vacancies_processed,
             'average_salary': int(total_salary / vacancies_processed),
         }   
     
-    print(popular_vacancies_statistics)
+    show_table(popular_languages_statistics, title='HeadHunter Москва')
+        
         
 if __name__ == '__main__':
     main()
