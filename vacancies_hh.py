@@ -15,9 +15,9 @@ def predict_rub_salary_hh(vacancy):
             return predicted_salary
 
 
-def get_vacancies_hh_information(language='Python',
-                                 page=0, area=1,
-                                 date_from=30):
+def get_vacancies_hh(language='Python',
+                     page=0, area=1,
+                     date_from=30):
     url = 'https://api.hh.ru/vacancies/'
     params = {
             'text': f'Программист {language}',
@@ -48,18 +48,17 @@ def main():
 
     for language in popular_programming_languages:
 
-        vacancies_hh_information = get_vacancies_hh_information(language=language,
-                                                                date_from=date_from)
-        pages_number = vacancies_hh_information['pages']
+        pages_number = 1
         page, total_salary, vacancies_processed = 0, 0, 0
-        vacancy_counts = vacancies_hh_information['found']
 
         while page < pages_number:
-            vacancies = get_vacancies_hh_information(language=language,
-                                                     page=page,
-                                                     date_from=date_from)['items']
+            vacancies_hh = get_vacancies_hh(language=language,
+                                            page=page,
+                                            date_from=date_from)
+            vacancy_counts = vacancies_hh['found']
+            pages_number = vacancies_hh['pages']
 
-            for vacancy in vacancies:
+            for vacancy in vacancies_hh['items']:
                 salary = predict_rub_salary_hh(vacancy)
                 if salary:
                     vacancies_processed += 1

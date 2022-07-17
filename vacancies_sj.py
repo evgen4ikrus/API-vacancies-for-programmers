@@ -62,11 +62,10 @@ def main():
                                             language=language,
                                             page=page,
                                             town=city)
-            vacancies = vacancies_sj['objects']
             vacancies_found = vacancies_sj['total']
             pages_number = math.ceil(vacancies_found / 20)
 
-            for vacancy in vacancies:
+            for vacancy in vacancies_sj['objects']:
                 salary = predict_rub_salary_sj(vacancy)
                 if salary:
                     vacancies_processed += 1
