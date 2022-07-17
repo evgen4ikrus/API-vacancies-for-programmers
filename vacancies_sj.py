@@ -7,10 +7,10 @@ from dotenv import load_dotenv
 from api_halpers import predict_salary, show_table
 
 
-def get_vacancies_sj_information(secret_key,
-                                 id_category=48,
-                                 language='Python',
-                                 page=0, town='Москва'):
+def get_vacancies_sj(secret_key,
+                     id_category=48,
+                     language='Python',
+                     page=0, town='Москва'):
     url = 'https://api.superjob.ru/2.0/vacancies/'
     headers = {
         'X-Api-App-Id': secret_key,
@@ -54,18 +54,17 @@ def main():
 
     for language in popular_programming_languages:
 
-        vacancies_sj_information = get_vacancies_sj_information(super_job_secret_key,
-                                                                language=language,
-                                                                town=city)
-        vacancies_found = vacancies_sj_information['total']
-        pages_number = math.ceil(vacancies_found / 20)
         page, total_salary, vacancies_processed = 0, 0, 0
+        pages_number = 1
 
         while page < pages_number:
-            vacancies = get_vacancies_sj_information(super_job_secret_key,
-                                                     language=language,
-                                                     page=page,
-                                                     town=city)['objects']
+            vacancies_sj = get_vacancies_sj(super_job_secret_key,
+                                            language=language,
+                                            page=page,
+                                            town=city)
+            vacancies = vacancies_sj['objects']
+            vacancies_found = vacancies_sj['total']
+            pages_number = math.ceil(vacancies_found / 20)
 
             for vacancy in vacancies:
                 salary = predict_rub_salary_sj(vacancy)
