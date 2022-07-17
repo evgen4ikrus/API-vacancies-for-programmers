@@ -4,7 +4,7 @@ import os
 import requests
 from dotenv import load_dotenv
 
-from api_halpers import predict_salary, show_table
+from api_halpers import predict_salary, get_table
 
 
 def get_vacancies_sj(secret_key,
@@ -81,8 +81,8 @@ def main():
             'average_salary': int(total_salary / vacancies_processed),
         }
 
-    show_table(popular_languages_statistics, title=f'SuperJob {city}')
-
+    table = get_table(popular_languages_statistics, title=f'SuperJob {city}')
+    print(table)
 
 if __name__ == '__main__':
     main()

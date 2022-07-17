@@ -1,7 +1,7 @@
 from terminaltables import AsciiTable
 
 
-def show_table(languages_statistics,
+def get_table(languages_statistics,
                title='Название таблицы'):
     table_data = [
         [
@@ -20,8 +20,8 @@ def show_table(languages_statistics,
                 languages_statistics[language_statistics]['average_salary'],
             ]
         )
-    table = AsciiTable(table_data, title)
-    print(table.table)
+    table = AsciiTable(table_data, title).table
+    return table
 
 
 def predict_salary(salary_from, salary_to):

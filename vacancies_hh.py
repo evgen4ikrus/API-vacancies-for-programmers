@@ -2,7 +2,7 @@ from datetime import date, timedelta
 
 import requests
 
-from api_halpers import predict_salary, show_table
+from api_halpers import predict_salary, get_table
 
 
 def predict_rub_salary_hh(vacancy):
@@ -76,7 +76,8 @@ def main():
             'average_salary': int(total_salary / vacancies_processed),
         }
 
-    show_table(popular_languages_statistics, title='HeadHunter Москва')
+    table = get_table(popular_languages_statistics, title='HeadHunter Москва')
+    print(table)
 
 
 if __name__ == '__main__':
