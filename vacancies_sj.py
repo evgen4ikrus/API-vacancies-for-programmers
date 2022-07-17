@@ -72,6 +72,9 @@ def main():
                     total_salary += salary
             page += 1
 
+        if vacancies_processed == 0:
+            continue
+
         popular_languages_statistics[language] = {
             'vacancies_found': vacancies_found,
             'vacancies_processed': vacancies_processed,

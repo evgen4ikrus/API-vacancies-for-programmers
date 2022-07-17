@@ -37,6 +37,7 @@ def main():
         'Java',
         'Javascript',
         'Go',
+        'sdbhjsdg',
         'C',
         'C#',
         'C++',
@@ -65,6 +66,9 @@ def main():
                     vacancies_processed += 1
                     total_salary += salary
             page += 1
+
+        if vacancies_processed == 0:
+            continue
 
         popular_languages_statistics[language] = {
             'vacancies_found': vacancy_counts,
