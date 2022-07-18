@@ -9,11 +9,12 @@ def predict_rub_salary_hh(vacancy):
     if not vacancy['salary']:
         return
     salary = vacancy['salary']
-    if salary['currency'] == 'RUR':
-        salary_from = salary['from']
-        salary_to = salary['to']
-        predicted_salary = predict_salary(salary_from, salary_to)
-        return predicted_salary
+    if salary['currency'] != 'RUR':
+        return
+    salary_from = salary['from']
+    salary_to = salary['to']
+    predicted_salary = predict_salary(salary_from, salary_to)
+    return predicted_salary
 
 
 def get_vacancies_hh(language='Python',
